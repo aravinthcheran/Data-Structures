@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include"classwork/fisheryates.h"
+#include"fisheryates.h"
 int main()
 {
     int rarr[100000];
