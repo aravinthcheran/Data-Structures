@@ -63,6 +63,34 @@ char *convert(char infix[],char postfix[])
     return postfix;
 }
 
+int evaluatePostfix(char* postfix) {
+    int stack[strlen(postfix)];
+    int top = -1;
+
+    for (int i = 0; postfix[i]; i++) {
+        if (isdigit(postfix[i]))
+            stack[++top] = postfix[i] - '0';
+        else {
+            int val1 = stack[top--];
+            int val2 = stack[top--];
+            switch (postfix[i]) {
+                case '+': stack[++top] = val2 + val1; break;
+                case '-': stack[++top] = val2 - val1; break;
+                case '*': stack[++top] = val2 * val1; break;
+                case '/': stack[++top] = val2 / val1; break;
+            }
+        }
+    }
+    return stack[top];
+}
+
+int main() {
+    char postfix[100];
+    printf("Enter the postfix expression: ");
+    scanf("%s", postfix);
+    printf("The evaluated expression is: %d", evaluatePostfix(postfix));
+    return 0;
+}
 int main()
 {
     char infix[100],postfix[100];
