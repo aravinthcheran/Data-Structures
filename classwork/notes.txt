@@ -1,0 +1,3 @@
+Time complexity:
+It has 2 parameters, one is step count and the other one is the operation count.
+Total time complexity of the 
