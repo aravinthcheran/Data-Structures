@@ -16,8 +16,7 @@ struct queue* getqueue(int sizeofqueue,int priority){
     return p;
 }
 
-void enqueue(struct queue *q, int data,int sizeofqueue) {
-    
+void enqueue(struct queue *q, int data,int sizeofqueue) {   
     if (q->rear == -1 && q->front == -1) {
         q->front = 0;
         q->rear = 0;

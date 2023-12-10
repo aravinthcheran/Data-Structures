@@ -27,7 +27,6 @@ void dequeue(){
     else if(front == rear){
         printf("The deleted element is:%d ",queue[front]);
         front = rear =-1;
-
     }
     else{
         printf("The deleted element is:%d\n ",queue[front]);

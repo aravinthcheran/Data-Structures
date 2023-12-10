@@ -84,18 +84,12 @@ int evaluatePostfix(char* postfix) {
     return stack[top];
 }
 
-int main() {
-    char postfix[100];
-    printf("Enter the postfix expression: ");
-    scanf("%s", postfix);
-    printf("The evaluated expression is: %d", evaluatePostfix(postfix));
-    return 0;
-}
 int main()
 {
     char infix[100],postfix[100];
     printf("Enter the infix expression: ");
     scanf("%s",infix);
     printf("The postfix expression is: %s",convert(infix,postfix));
+    printf("The evaluated expression is: %d", evaluatePostfix(postfix));
     return 0;
 }

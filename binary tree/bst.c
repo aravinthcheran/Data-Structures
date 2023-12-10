@@ -66,6 +66,39 @@ void deletion(int *a,int data){
     }
 }
 
+int predecessor(int *a){
+    int i=0;
+    if(a[i+1]!=0){
+        while(a[2*i+2]!=0){
+            i=2*i+2;
+        }
+    }
+    return a[i];
+}
+
+void deleteNode(int *a, int index, int key) {
+    if (a[index] == 0) {
+        return;
+    } else if (a[index] > key) {
+        deleteNode(a, 2 * index + 1, key);
+    } else if (a[index] < key) {
+        deleteNode(a, 2 * index + 2, key);
+    } else {
+        if (a[2 * index + 1] == 0) {
+            a[index] = a[2 * index + 2];
+            deleteNode(a, 2 * index + 2, a[2 * index + 2]);
+        } else if (a[2 * index + 2] == 0) {
+            // Node with only left child
+            a[index] = a[2 * index + 1];
+            deleteNode(a, 2 * index + 1, a[2 * index + 1]);
+        } else {
+            // Node with two children, replace with predecessor
+            int temp = predecessor(a, 2 * index + 1);
+            a[index] = temp;
+            deleteNode(a, 2 * index + 1, temp);
+        }
+    }
+}
 void deletion(int *a,int data)
 int main(){
     printf("Enter the no of elements:");

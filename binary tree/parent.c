@@ -17,6 +17,7 @@ struct node* getnode(int data) {
 
 void insert(struct node** root, int data) {
     if (*root == NULL) {
+        
         *root = getnode(data);
     } else if (data > (*root)->data) {
         insert(&((*root)->right), data);
@@ -82,11 +83,15 @@ struct node* deleteNode(struct node* root, int key) {
             return temp;
         }
 
-        struct node* temp = predecessor(root->left);
-        root->right = deleteNode(root->right, temp->data); 
+        else {
+            struct node* temp = predecessor(root->left);
+            root->data = temp->data;
+            root->left = deleteNode(root->left, temp->data); 
+        }
     }
     return root;
 }
+    
 
 int main() {
     struct node* root = NULL;
