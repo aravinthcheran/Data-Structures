@@ -48,3 +48,30 @@ void dequeue(struct Queue* q) {
 
     free(temp);
 }
+
+void display(struct Queue* q) {
+    struct Node* temp = q->front;
+    while(temp != NULL) {
+        if(temp->next != NULL)
+            printf("%d->", temp->data);
+        else
+            printf("%d", temp->data);
+        temp = temp->next;
+    }
+    if(q->front == NULL)
+        printf("Queue is empty\n");
+    else
+        printf("\n");
+}
+
+int main() {
+    struct Queue* q = createQueue();
+    enqueue(q, 1);
+    enqueue(q, 2);
+    enqueue(q, 3);
+    dequeue(q);
+    display(q);
+    enqueue(q, 4);
+    display(q);
+    return 0;
+}

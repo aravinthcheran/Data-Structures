@@ -36,17 +36,22 @@ void enqueue(struct Queue* q, int data) {
     q->rear->next = q->front;
 }
 
-void dequeue(struct Queue* q) {
-    if (q->front == NULL)
-        return;
+int deQueue(Queue* q) {
+    if (q->front == NULL) {
+        printf("Queue is empty");
+        return -1;
+    }
+
+    int item = q->front->data;
 
     if (q->front == q->rear) {
         free(q->front);
         q->front = q->rear = NULL;
     } else {
-        struct Node* temp = q->front;
+        Node* temp = q->front;
         q->front = q->front->next;
-        q->rear->next = q->front;
+        q->rear->next= q->front;
         free(temp);
     }
+    return item;
 }
