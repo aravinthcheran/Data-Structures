@@ -19,3 +19,13 @@ plt.tight_layout()
 
 # Display the plot
 plt.show()
+plt.figure(figsize=(10, 6))
+plt.plot(test_cases, average_runtimes, marker='s', linestyle='--', color='r')
+plt.title('Average Runtimes for Determination of Common Ancestor')
+plt.xlabel('Test Case')
+plt.ylabel('Average Runtime (seconds)')
+plt.grid(True)
+plt.tight_layout()
+
+# Display the plot
+plt.show()

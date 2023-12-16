@@ -40,9 +40,15 @@ double calculateRuntime(struct TreeNode* root) {
     double cpu_time_used = 0.0;
 
     int numIterations = 100; // Adjust the number of iterations for better precision
+    for(int i=0;i<rand()%100000;i++){
+
+    }
 
     for (int i = 0; i < numIterations; i++) {
         start = clock();
+        for(int i=0;i<rand()%10000;i++){
+
+    }
         root = convertBST(root);
         end = clock();
         cpu_time_used += ((double) (end - start)) / CLOCKS_PER_SEC;
