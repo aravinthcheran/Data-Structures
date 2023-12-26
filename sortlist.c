@@ -16,27 +16,24 @@ struct node *getnode(int data) {
 struct node *sort(struct node *head) {
     struct node *current = head, *index = NULL;
     int temp, flag;
-    
+
     if (head != NULL && head->next != NULL) {
-        while (current != NULL) {
-            index = current->next;
+        do {
             flag = 0;
-            while (index != NULL) {
-                if (current->data > index->data) {
+            current = head;
+            while (current->next != index) {
+                if (current->data > current->next->data) {
                     temp = current->data;
-                    current->data = index->data;
-                    index->data = temp;
+                    current->data = current->next->data;
+                    current->next->data = temp;
                     flag = 1;
                 }
-                index = index->next;
+                current = current->next;
             }
-            if (flag == 0) {
-                break;
-            }
-            current = current->next;
-        }
+            index = current;
+        } while (flag);
     }
-    
+
     return head;
 }
 

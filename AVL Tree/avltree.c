@@ -23,19 +23,13 @@ struct node *createNode(int element)
     //Maximum height
 int maxiHeight(int h1, int h2)
 {
-    if(h1>h2)
-        return h1;
-    else
-        return h2;
+    return (h1 > h2) ? h1 : h2;
 }
 
     //Finding Height
 int FindHeight(struct node *node)
 {
-    if (node==NULL)
-        return 0;
-    else
-        return node->height;
+    return (node == NULL) ? 0 : node->height;
 }
 
     //finding BF
@@ -105,6 +99,83 @@ struct node *Insert_AVL(struct node *root, int element)
     }
     //RL rotation
     else if (balance < -1 && element < root->right->data)
+    {
+        root->right = rightRotate(root->right);
+        return leftRotate(root);
+    }
+
+    return root;
+}
+
+struct node* deleteNode(struct node* root, int key)
+{
+    // Step 1: Perform standard BST delete
+    if (root == NULL)
+        return root;
+    if (key < root->key)
+        root->left = deleteNode(root->left, key);
+    else if(key > root->key)
+        root->right = deleteNode(root->right, key);
+    else
+    {
+        // node with only one child or no child
+        if( (root->left == NULL) || (root->right == NULL) )
+        {
+            struct node *temp = root->left ? root->left : root->right;
+
+            // No child case
+            if(temp == NULL)
+            {
+                temp = root;
+                root = NULL;
+            }
+            else // One child case
+             *root = *temp; // Copy the contents of the non-empty child
+
+            free(temp);
+        }
+        else
+        {
+            // node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            struct node* temp = minValueNode(root->right);
+
+            // Copy the inorder successor's data to this node
+            root->key = temp->key;
+
+            // Delete the inorder successor
+            root->right = deleteNode(root->right, temp->key);
+        }
+    }
+
+    // If the tree had only one node then return
+    if (root == NULL)
+      return root;
+
+    // Step 2: Update the height of the current node
+    root->height = 1 + max(height(root->left), height(root->right));
+
+    // Step 3: Get the balance factor
+    int balance = getBalance(root);
+
+    // Step 4: If the node is unbalanced, then try out the 4 cases
+    // Case 1: Left Left Case
+    if (balance > 1 && getBalance(root->left) >= 0)
+        return rightRotate(root);
+
+    // Case 2: Right Right Case
+    if (balance < -1 && getBalance(root->right) <= 0)
+        return leftRotate(root);
+
+    // Case 3: Left Right Case
+    if (balance > 1 && getBalance(root->left) < 0)
+    {
+        root->left =  leftRotate(root->left);
+        return rightRotate(root);
+    }
+
+    // Case 4: Right Left Case
+    if (balance < -1 && getBalance(root->right) > 0)
     {
         root->right = rightRotate(root->right);
         return leftRotate(root);

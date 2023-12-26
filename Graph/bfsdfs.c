@@ -81,29 +81,16 @@ void BFS(struct Graph* graph, int start) {
             temp = temp->next;
         }
     }
-
+    for(int i=0;i<V;i++){
+        if(visited[i]==0){
+            BFS(graph,i);
+        }
+    }
     free(visited);
     free(queue);
 }
 
 // Recursive function to perform Depth-First Search (DFS)
-void DFSUtil(struct Graph* graph, int v, int* visited) {
-    // Mark the current node as visited and print it
-    visited[v] = 1;
-    printf("%d ", v);
-
-    // Recur for all the adjacent vertices
-    struct Node* temp = graph->adjList[v];
-    while (temp != NULL) {
-        int adjacentVertex = temp->data;
-        if (!visited[adjacentVertex]) {
-            DFSUtil(graph, adjacentVertex, visited);
-        }
-        temp = temp->next;
-    }
-}
-
-// Function to perform Depth-First Search (DFS)
 void DFS(struct Graph* graph, int start) {
     int V = graph->V;
 
@@ -112,12 +99,39 @@ void DFS(struct Graph* graph, int start) {
     for (int i = 0; i < V; ++i)
         visited[i] = 0;
 
-    // Perform DFS starting from the given vertex
-    DFSUtil(graph, start, visited);
+    // Create a stack for DFS
+    int *stack=(int*)malloc(V*sizeof(int));
+    int top=-1;
+    // Push the current source node
+    stack[++top] = start;
+
+    while (top != -1) {
+        // Pop a vertex from stack and print it
+        int currentVertex = stack[top--];
+
+        // Stack may contain same vertex twice, so
+        // we need to print the popped item only
+        // if it is not visited
+        if (!visited[currentVertex]) {
+            printf("%d ", currentVertex);
+            visited[currentVertex] = 1;
+        }
+
+        // Get all adjacent vertices of the popped vertex currentVertex
+        // If an adjacent has not been visited, then push it to the stack
+        struct Node* temp = graph->adjList[currentVertex];
+        while (temp != NULL) {
+            int adjacentVertex = temp->data;
+            if (!visited[adjacentVertex]) {
+                stack[++top] = adjacentVertex;
+            }
+            temp = temp->next;
+        }
+    }
 
     free(visited);
+    free(stack);
 }
-
 // Example usage
 int main() {
     int V = 6;

@@ -59,12 +59,9 @@ void topologicalSortUtil(struct Graph* graph, int v, int visited[], int stack[],
 // Function to perform topological sort
 void topologicalSort(struct Graph* graph) {
     int V = graph->V;
-    int* visited = (int*)malloc(V * sizeof(int));
+    int* visited = (int*)calloc(V, sizeof(int));
     int* stack = (int*)malloc(V * sizeof(int));
     int stackIndex = 0;
-
-    for (int i = 0; i < V; ++i)
-        visited[i] = 0;
 
     for (int i = 0; i < V; ++i) {
         if (!visited[i]) {
@@ -87,12 +84,12 @@ int main() {
     int V = 6;
     struct Graph* graph = createGraph(V);
 
-    addEdge(graph, 5, 2);
-    addEdge(graph, 5, 0);
-    addEdge(graph, 4, 0);
-    addEdge(graph, 4, 1);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 4);
+    addEdge(graph, 2, 4);
+    addEdge(graph, 4, 3);
+    addEdge(graph, 4, 5);
     addEdge(graph, 2, 3);
-    addEdge(graph, 3, 1);
 
     topologicalSort(graph);
 
