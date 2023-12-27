@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-
+#include<string.h>
 struct treenode{
     char data;
     struct treenode *left;
@@ -20,10 +20,10 @@ int isop(char ch){
 }
 
 struct treenode *createexpreesiontree(char postfix[]){
-    struct treenode *stack[100];
+    struct treenode *stack[strlen(postfix)];
     int top=-1;
     int i=0;
-    while (postfix[i]!='\0')
+    while (postfix[i])
     {
         if(isop(postfix[i])){
             struct treenode *newnode=getnode(postfix[i]);
