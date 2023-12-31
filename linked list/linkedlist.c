@@ -63,13 +63,31 @@ void deletenodex(struct node **head,int x){
     free(current);
 }
 
+void deletesequence(struct node **head,int x){
+    int count=1;
+    struct node *current=*head;
+    struct node *prev=NULL;
+    while(current!=NULL){
+        if(count==x){
+            prev->next=current->next;
+            free(current);
+            current=prev->next;
+            count=1;
+        }
+        else{
+            prev=current;
+            current=current->next;
+            count++;
+        }
+    }
+}
 
 int main(){
     struct node *head=getnode(1);
-    insertatrear(head,2);
-    insertatfront(&head,3);
+    for(int i=2;i<=10;i++){
+        insertatrear(head,i);
+    }
     display(head);
-    deleteatrear(head);
-    deleteatfront(&head);
+    deletesequence(&head,2);
     display(head);
 }

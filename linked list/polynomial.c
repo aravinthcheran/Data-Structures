@@ -32,21 +32,27 @@ void insert(struct node **head, int coeff, int exp){
 struct node *addpoly(struct node *poly1, struct node *poly2){
     struct node *temp1=poly1,*temp2=poly2, *result=NULL;
     while(temp1!=NULL && temp2!=NULL){
-        if(temp1->coeff>temp2->coeff){
+        if(temp1->exp>temp2->exp){
             insert(&result, temp1->coeff, temp1->exp);
+            temp1=temp1->next;
         }
-        else if(temp1->coeff<temp2->coeff){
+        else if(temp1->exp<temp2->exp){
             insert(&result, temp2->coeff, temp2->exp);
+            temp2=temp2->next;
         }
         else{
             insert(&result, temp1->coeff+temp2->coeff, temp1->exp);
+            temp1=temp1->next;
+            temp2=temp2->next;
         }
     }
     while(temp1!=NULL){
         insert(&result, temp1->coeff, temp1->exp);
+        temp1=temp1->next;
     }
     while(temp2!=NULL){
         insert(&result, temp2->coeff, temp2->exp);
+        temp2=temp2->next;
     }
     return result;
 }

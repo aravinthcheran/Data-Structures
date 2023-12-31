@@ -30,9 +30,7 @@ void display(int *a,int n){
 void deletemin(int *a, int i) {
     if (a[i] == 0) return;  // heap is empty
 
-    if (a[2*i+1] == 0 && a[2*i+2] == 0) {
-        a[i] = 0;
-    } else if (a[2*i+1] == 0) {
+    if (a[2*i+1] == 0) {
         a[i] = a[2*i+2];
         deletemin(a, 2*i+2);
     } else if (a[2*i+2] == 0) {
@@ -45,6 +43,26 @@ void deletemin(int *a, int i) {
         } else {
             a[i] = a[2*i+1];
             deletemin(a, 2*i+1);
+        }
+    }
+}
+
+void deletemax(int *a, int i) {
+    if (a[i] == 0) return;  // heap is empty
+
+    if (a[2*i+1] == 0) {
+        a[i] = a[2*i+2];
+        deletemax(a, 2*i+2);
+    } else if (a[2*i+2] == 0) {
+        a[i] = a[2*i+1];
+        deletemax(a, 2*i+1);
+    } else {
+        if (a[2*i+1] < a[2*i+2]) {
+            a[i] = a[2*i+2];
+            deletemax(a, 2*i+2);
+        } else {
+            a[i] = a[2*i+1];
+            deletemax(a, 2*i+1);
         }
     }
 }
