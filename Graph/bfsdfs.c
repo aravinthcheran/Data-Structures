@@ -51,9 +51,9 @@ void BFS(struct Graph* graph, int start) {
     int V = graph->V;
 
     // Create an array to keep track of visited vertices
-    int* visited = (int*)malloc(V * sizeof(int));
-    for (int i = 0; i < V; ++i)
-        visited[i] = 0;
+    int* visited = (int*)calloc(V ,sizeof(int));
+    // for (int i = 0; i < V; ++i)
+    //     visited[i] = 0;
 
     // Create a queue for BFS
     int* queue = (int*)malloc(V * sizeof(int));

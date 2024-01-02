@@ -49,6 +49,46 @@ void display(struct node* root) {
     display(root->right);
 }
 
+void preorderTraversal(struct node* root) {
+    if (root == NULL) return;
+
+    struct node** stack = (struct node**)malloc(sizeof(struct node*) * 1000);
+    int top = -1;
+
+    stack[++top] = root;
+
+    while (top != -1) {
+        struct node* node = stack[top--];
+        printf("%d ", node->data);
+
+        if (node->right) stack[++top] = node->right;
+        if (node->left) stack[++top] = node->left;
+    }
+
+    free(stack);
+}
+
+void inorderTraversal(struct node* root) {
+    struct node** stack = (struct node**)malloc(sizeof(struct node*) * 1000);
+    int top = -1;
+    struct node* curr = root;
+
+    while (curr != NULL || top != -1) {
+        while (curr != NULL) {
+            stack[++top] = curr;
+            curr = curr->left;
+        }
+        curr = stack[top--];
+        printf("%d ", curr->data);
+        curr = curr->right;
+    }
+
+    free(stack);
+}
+
+
+
+
 struct node* search(struct node* parent, struct node* root, int data, int* side) {
     if (root == NULL) {
         return NULL;
@@ -65,7 +105,7 @@ struct node* search(struct node* parent, struct node* root, int data, int* side)
     }
 }
 
-struct node* deleteNode(struct node* root, int key) {
+struct node* deleteNode(struct node* root, int key){
     if (root == NULL) return root;
     if (key < root->data)
         root->left = deleteNode(root->left, key);

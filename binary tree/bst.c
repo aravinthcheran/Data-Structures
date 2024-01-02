@@ -37,35 +37,6 @@ int search(int *a,int data,int index){
     return -1;
 }
 
-void deletion(int *a,int data){
-    if(search(data)==-1){
-        printf("elemnt not found");
-        return;
-    }
-    else{
-        int index=search(data);
-        if(*(a+2*index+1)==0 && *(a+2*index+2)==0){
-            *(a+index)=0;
-        }
-        else if(*(a+2*index+1)!=0 && *(a+2*index+2)==0){
-            *(a+index)=*(a+2*index+1);
-            *(a+2*index+1)=0;
-        }
-        else if(*(a+2*index+1)==0 && *(a+2*index+2)!=0){
-            *(a+index)=*(a+2*index+2);
-            *(a+2*index+2)=0;
-        }
-        else{
-            int temp=*(a+2*index+2);
-            while(*(a+2*temp+1)!=0){
-                temp=*(a+2*temp+1);
-            }
-            *(a+index)=*(a+temp);
-            *(a+temp)=0;
-        }
-    }
-}
-
 int predecessor(int *a){
     int i=0;
     if(a[i+1]!=0){

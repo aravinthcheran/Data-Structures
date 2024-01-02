@@ -6,8 +6,9 @@ struct node{
     struct node *next;
 };
 
-struct list{
-    struct node *head;
+struct graph{
+    int v;
+    struct node **list;
 };
 
 struct node* createNode(int data){
@@ -17,15 +18,27 @@ struct node* createNode(int data){
     return newNode;
 }
 
-struct list* createList(){
-    struct list *newList=malloc(sizeof(struct list));
-    newList->head=NULL;
-    return newList;
+struct graph *createGraph(int v){
+    struct graph *newGraph=malloc(sizeof(struct graph));
+    newGraph->v=v;
+    newGraph->list=malloc(v*sizeof(struct node *));
+    for(int i=0;i<v;i++){
+        newGraph->list[i]=createNode(i);
+    }
+    return newGraph;
 }
 
-void display(struct list *adjList[], int v) {
-    for(int i = 0; i < v; i++) {
-        struct node *temp = adjList[i]->head;
+void insert(struct graph *g, int u, int v){
+    struct node *temp=g->list[u];
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    temp->next=createNode(v);
+}
+
+void display(struct graph *g) {
+    for(int i = 0; i < g->v; i++) {
+        struct node *temp = g->list[i];
         printf("Adjacency list of vertex %d:\n", i);
         while(temp) {
             printf("%d -> ", temp->data);
@@ -39,10 +52,7 @@ int main(){
     printf("Enter the no of vertex:");
     int vertex;
     scanf("%d",&vertex);
-    struct list *adjList[vertex];
-    for(int i=0;i<vertex;i++){
-        adjList[i]=createList();
-    }
+    struct graph *g = createGraph(vertex);
     printf("Enter the no of edges:");
     int e;
     scanf("%d",&e);
@@ -50,22 +60,9 @@ int main(){
         printf("Enter the pairs:");
         int u,v;
         scanf("%d %d",&u,&v);
-        if(adjList[u]->head==NULL){
-            adjList[u]->head=createNode(u);
-        }
-        struct node *temp=adjList[u]->head;
-        while(temp->next!=NULL){
-            temp=temp->next;
-        }
-        temp->next=createNode(v);
-        if(adjList[v]->head==NULL){
-        adjList[v]->head=createNode(v);
-        }
-        temp=adjList[v]->head;
-        while(temp->next!=NULL){
-            temp=temp->next;
-        }
-        temp->next=createNode(u);
+        insert(g, u, v);
+        insert(g, v, u);
     }
-    display(adjList,vertex);
+    display(g);
+    return 0;
 }

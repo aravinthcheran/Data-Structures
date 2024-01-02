@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
 // Structure for a graph node
 struct Node {
     int data;
@@ -10,7 +10,7 @@ struct Node {
 // Structure for a directed graph
 struct Graph {
     int V;          // Number of vertices
-    struct Node** adjList; // Adjacency list
+    struct Node** adjList; // Adjacency adjList
 };
 
 // Function to create a new graph node
@@ -25,7 +25,7 @@ struct Node* createNode(int data) {
 struct Graph* createGraph(int V) {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
     graph->V = V;
-    graph->adjList = (struct Node*)malloc(V * sizeof(struct Node));
+    graph->adjList = (struct Node**)malloc(V * sizeof(struct Node*)); // Fix: Change the type of adjList to struct Node**
 
     for (int i = 0; i < V; ++i)
         graph->adjList[i] = NULL;
@@ -41,55 +41,64 @@ void addEdge(struct Graph* graph, int src, int dest) {
 }
 
 // Recursive function to perform topological sort
-void topologicalSortUtil(struct Graph* graph, int v, int visited[], int stack[], int* stackIndex) {
-    visited[v] = 1;
-
-    struct Node* currentNode = graph->adjList[v];
-    while (currentNode != NULL) {
-        int adjacentVertex = currentNode->data;
-        if (!visited[adjacentVertex]) {
-            topologicalSortUtil(graph, adjacentVertex, visited, stack, stackIndex);
-        }
-        currentNode = currentNode->next;
-    }
-
-    stack[(*stackIndex)++] = v;
-}
-
-// Function to perform topological sort
-void topologicalSort(struct Graph* graph) {
-    int V = graph->V;
-    int* visited = (int*)calloc(V, sizeof(int));
-    int* stack = (int*)malloc(V * sizeof(int));
+void topologicalSort(struct Graph* g) {
+    int v = g->V;
+    int* indegree = (int*)calloc(v, sizeof(int));
+    int* stack = (int*)malloc(v * sizeof(int));
     int stackIndex = 0;
 
-    for (int i = 0; i < V; ++i) {
-        if (!visited[i]) {
-            topologicalSortUtil(graph, i, visited, stack, &stackIndex);
+    // Calculate indegree of each vertex
+    for (int i = 0; i < v; i++) {
+        struct Node* temp = g->adjList[i];
+        while (temp) {
+            indegree[temp->data]++;
+            temp = temp->next;
         }
     }
 
-    // Print the topological order
-    printf("Topological Sort: ");
-    for (int i = stackIndex - 1; i >= 0; --i) {
-        printf("%d ", stack[i]);
+    // Add all vertices with indegree 0 to the stack
+    for (int i = 0; i < v; i++) {
+        if (indegree[i] == 0) {
+            stack[stackIndex++] = i;
+        }
     }
 
-    free(visited);
+    // Process vertices in the stack
+    while (stackIndex > 0) {
+        // Pop a vertex from stack
+        int u = stack[--stackIndex];
+
+        // Print the popped vertex
+        printf("%d ", u);
+
+        // Decrease indegree of all vertices adjacent to the popped vertex
+        struct Node* temp = g->adjList[u];
+        while (temp) {
+            indegree[temp->data]--;
+            if (indegree[temp->data] == 0) {
+                stack[stackIndex++] = temp->data;
+            }
+            temp = temp->next;
+        }
+    }
+
+    free(indegree);
     free(stack);
 }
 
 // Example usage
 int main() {
-    int V = 6;
+    int V = 7;
     struct Graph* graph = createGraph(V);
 
     addEdge(graph, 1, 2);
     addEdge(graph, 1, 4);
-    addEdge(graph, 2, 4);
-    addEdge(graph, 4, 3);
-    addEdge(graph, 4, 5);
     addEdge(graph, 2, 3);
+    addEdge(graph, 4, 3);
+    addEdge(graph, 4, 2);
+    addEdge(graph, 2, 5);
+    addEdge(graph, 2, 6);
+    addEdge(graph, 5, 6);
 
     topologicalSort(graph);
 

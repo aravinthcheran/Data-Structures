@@ -2,9 +2,10 @@
 #include<stdlib.h>
 #include<string.h>
 #include<ctype.h>
+#include<math.h>
 int isOperator(char ch)
 {
-    if(ch=='+'||ch=='-'||ch=='*'||ch=='/')
+    if(ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='^')
         return 1;
     else
         return 0;
@@ -16,6 +17,8 @@ int precedence(char ch)
         return 1;
     else if(ch=='*'||ch=='/')
         return 2;
+    else if(ch=='^')
+        return 3;
     else
         return 0;
 }
@@ -78,6 +81,7 @@ int evaluatePostfix(char* postfix) {
                 case '-': stack[++top] = val2 - val1; break;
                 case '*': stack[++top] = val2 * val1; break;
                 case '/': stack[++top] = val2 / val1; break;
+                case '^': stack[++top] = pow(val1,val2); break;
             }
         }
     }
